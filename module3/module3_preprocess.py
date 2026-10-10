@@ -62,7 +62,7 @@ MO_HINH = {"ridge": ("ridge", "Ridge", 1, "module1/Module1_ridge.ipynb"),
            "poisson": ("poisson", "Poisson", 2, "module2/Module2_poisson.ipynb"),
            "rf": ("rf", "Random Forest", 3, "module3/Module3_3_random_forest.ipynb"),
            "xgb": ("xgb", "XGBoost", 4, "module4/Module4_xgboost.ipynb"),
-           "catboost": ("cb", "CatBoost", 5, "module5/Module5_catboost.ipynb")}
+           "lightgbm": ("lgbm", "LightGBM", 5, "module5/Module5_lightgbm.ipynb")}
 BAO_CAO_DIR = os.path.join(ROOT, "bao_cao")      # bản báo cáo tổng hợp — CÓ commit (chỉ số liệu đã tổng hợp)
 
 

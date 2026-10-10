@@ -1,8 +1,8 @@
 {
-  "thu_muc": "catboost",
-  "ten": "CatBoost",
+  "thu_muc": "lightgbm",
+  "ten": "LightGBM",
   "module": 5,
-  "ngay_chay": "09/10/2026",
+  "ngay_chay": "10/10/2026",
   "bang_tong_so_luong": 216592.0,
   "bang_giu": [
     "bán buôn",
@@ -51,10 +51,10 @@
       "cua_hang": "HN007",
       "ty_trong_cua_hang": 0.7066282551740487
     },
-    "du_bao_cb": {
-      "top10_o": 0.7940616070071533,
+    "du_bao_lgbm": {
+      "top10_o": 0.8216326449799924,
       "cua_hang": "HN007",
-      "ty_trong_cua_hang": 0.7089083128350092
+      "ty_trong_cua_hang": 0.718815009673671
     }
   }
 }

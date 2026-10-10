@@ -35,8 +35,9 @@ data_eda/
 │   ├── Module3_1_tien_xu_ly.ipynb       # làm sạch → bảng mô hình
 │   ├── Module3_2_eda.ipynb              # mô tả nhóm hàng, cửa hàng, thời gian, độ phủ
 │   └── Module3_3_random_forest.ipynb    # mô hình Random Forest
-├── module5/                             # Module 5 — Tổng hợp, CatBoost
-│   ├── Module5_catboost.ipynb           # mô hình CatBoost
+├── module5/                             # Module 5 — Tổng hợp, LightGBM
+│   ├── Module5_lightgbm.ipynb           # notebook mô hình LightGBM
+│   ├── lightgbm_model.py                # mã huấn luyện dùng chung với notebook
 │   └── tao_bao_cao.py                   # cập nhật bản báo cáo tổng hợp từ bao_cao/du_lieu/
 ├── bao_cao/                             # ★ bản báo cáo kết quả — CÓ đưa lên Git (chỉ số liệu đã tổng hợp)
 │   ├── BAO_CAO.md                       # so sánh, giải thích, kết luận — đọc ở đây
@@ -44,7 +45,7 @@ data_eda/
 │   └── hinh/                            # biểu đồ sinh tự động
 ├── outputs/                             # kết quả đầy đủ khi chạy — KHÔNG đưa lên Git
 │   ├── daily_store_category.csv         # ★ bảng mô hình dùng chung
-│   └── rf/ · catboost/                  # kết quả từng mô hình
+│   └── rf/ · lightgbm/                  # kết quả từng mô hình
 ├── .env.example                         # mẫu cấu hình → copy thành .env
 ├── CLAUDE.md                            # quy ước dự án: dữ liệu, so sánh mô hình, sửa code chung
 └── README.md
@@ -54,8 +55,8 @@ data_eda/
 
 1. Copy `.env.example` thành `.env`. Nếu chưa có file dữ liệu trong `data/`, xin `DRIVE_ID` trong nhóm và điền vào `.env` để module tự tải từ Google Drive.
    > ⚠️ Repo public và dữ liệu có tên khách hàng/nhân viên: **không** commit `.env`, file dữ liệu hay `DRIVE_ID`.
-2. Cài thư viện: `pip install pandas numpy openpyxl matplotlib scikit-learn joblib requests catboost`.
-3. Chạy `module3/Module3_1_tien_xu_ly` trước (tạo bảng mô hình), sau đó các notebook còn lại theo thứ tự bất kỳ: `Module3_2_eda`, `Module3_3_random_forest`, `module5/Module5_catboost`.
+2. Cài thư viện: `pip install pandas numpy openpyxl matplotlib scikit-learn joblib requests lightgbm`.
+3. Chạy `module3/Module3_1_tien_xu_ly` trước (tạo bảng mô hình), sau đó các notebook còn lại theo thứ tự bất kỳ: `Module3_2_eda`, `Module3_3_random_forest`, `module5/Module5_lightgbm`. Có thể chạy `python module5/lightgbm_model.py` từ gốc repo để huấn luyện LightGBM ngoài notebook.
 4. Xong một mô hình: [nộp kết quả vào báo cáo](#nộp-kết-quả-vào-báo-cáo) → `python module5/tao_bao_cao.py`.
 
 | Biến trong `.env` | Mặc định | Ý nghĩa |
@@ -78,7 +79,7 @@ rows = bang_baseline(te)             # Naive, Seasonal Naive, MA7
 rows["Mô hình X"] = danh_gia(te["so_luong"], du_bao)   # MAE, RMSE, WAPE, R², Bias
 ```
 
-**Google Colab:** upload `module3_preprocess.py` và `.env` cùng thư mục với notebook rồi Runtime → Run all; cuối mỗi notebook có ô nén và tải `outputs/` về.
+**Google Colab:** giữ cấu trúc thư mục repo để notebook truy cập `module3/module3_preprocess.py`; với Module 5 cần cả `module5/lightgbm_model.py`. Cài các thư viện ở bước 2, đặt `.env` tại gốc repo rồi Runtime → Run all.
 
 ---
 
@@ -90,7 +91,7 @@ rows["Mô hình X"] = danh_gia(te["so_luong"], du_bao)   # MAE, RMSE, WAPE, R²,
 | **2** · Tổng quan nghiên cứu | II. Literature Review · IV. Problem formulation, metrics · References | Poisson Regression | Phuong |
 | **3** · Dữ liệu và phân tích cửa hàng | III. Data Analysis · IV. Tiền xử lý, lọc, tổng hợp · V. Kết quả theo nhóm hàng/cửa hàng | Random Forest | Phúc |
 | **4** · Đặc trưng và thiết kế thí nghiệm | IV. Lag, rolling, lịch, leakage · Train–Validation–Test, tuning · V. Phân tích lỗi | XGBoost | Sơn |
-| **5** · Tổng hợp và giá trị thực tế | V. So sánh 5 mô hình · Business implications, limitations · VI. Conclusion | CatBoost | Ngọc |
+| **5** · Tổng hợp và giá trị thực tế | V. So sánh 5 mô hình · Business implications, limitations · VI. Conclusion | LightGBM | Ngọc |
 
 Mỗi module đều phải: train → tối ưu → lưu kết quả → viết phần tương ứng cho mô hình của mình, theo [Chuẩn đầu ra mỗi mô hình](#chuẩn-đầu-ra-mỗi-mô-hình).
 
@@ -98,7 +99,7 @@ Mỗi module đều phải: train → tối ưu → lưu kết quả → viết 
 
 ## Chuẩn đầu ra mỗi mô hình
 
-Mọi mô hình sinh **cùng bộ file và cùng khung mục kết quả**, để bản báo cáo tổng hợp tự gộp mà không phải viết code riêng cho từng mô hình. Mẫu: `module3/Module3_3_random_forest.ipynb` và `module5/Module5_catboost.ipynb`.
+Mọi mô hình sinh **cùng bộ file và cùng khung mục kết quả**, để bản báo cáo tổng hợp tự gộp mà không phải viết code riêng cho từng mô hình. Mẫu: `module3/Module3_3_random_forest.ipynb` và `module5/Module5_lightgbm.ipynb`.
 
 **Tên gọi** (cũng khai báo trong code ở `MO_HINH` của `module3_preprocess.py` — sửa thì sửa cả hai nơi)
 
@@ -108,7 +109,7 @@ Mọi mô hình sinh **cùng bộ file và cùng khung mục kết quả**, đ�
 | 2 | Poisson | `module2/Module2_poisson.ipynb` | `outputs/poisson/` | `poisson` | `du_bao_poisson` | `Poisson` |
 | 3 | Random Forest | `module3/Module3_3_random_forest.ipynb` | `outputs/rf/` | `rf` | `du_bao_rf` | `Random Forest` |
 | 4 | XGBoost | `module4/Module4_xgboost.ipynb` | `outputs/xgb/` | `xgb` | `du_bao_xgb` | `XGBoost` |
-| 5 | CatBoost | `module5/Module5_catboost.ipynb` | `outputs/catboost/` | `cb` | `du_bao_cb` | `CatBoost` |
+| 5 | LightGBM | `module5/Module5_lightgbm.ipynb` | `outputs/lightgbm/` | `lgbm` | `du_bao_lgbm` | `LightGBM` |
 
 **File bắt buộc** (CSV ghi `encoding="utf-8-sig"`)
 
@@ -232,7 +233,7 @@ Giữ đúng tiêu đề `## 5. Kết quả và thảo luận` và nhãn `**Th�
 **V. Results — theo nhóm hàng và cửa hàng**
 
 - [x] ✅ Lỗi Random Forest theo nhóm hàng và cửa hàng (`rf_error_by_category.csv`, `rf_error_by_store.csv`)
-- [ ] ⚠️ Tổng hợp các mô hình theo nhóm hàng/khu vực — tự động trong [báo cáo](bao_cao/BAO_CAO.md) mục 6–7, đang có RF + CatBoost; chờ 3 mô hình còn lại
+- [ ] ⚠️ Tổng hợp các mô hình theo nhóm hàng/khu vực — tự động trong [báo cáo](bao_cao/BAO_CAO.md) mục 6–7, đang có RF + LightGBM; chờ 3 mô hình còn lại
 
 **Mô hình Random Forest**
 
@@ -243,22 +244,22 @@ Giữ đúng tiêu đề `## 5. Kết quả và thảo luận` và nhãn `**Th�
 - [ ] ⚠️ **Chưa thắng MA7** trên MAE/WAPE, thua cả trên Validation (MAE 0,868 so với 0,847). Thắng MA7 ở 4 nhóm lớn nhất (Điện thoại, Phụ kiện, Hcare, Tai nghe — 81% lượng bán) nhưng dự báo dư 15% ở 19 nhóm thưa. Cấu hình tốt nhất nằm ở biên không gian tìm kiếm (`min_samples_leaf=20`, `max_depth=8`) → thử cây đơn giản hơn; chạy lại sau khi chốt bộ lọc
 - [ ] ⚠️ Đặc trưng và mốc chia đang do Module 3 tự đặt — cần thống nhất với Module 4
 
-### Module 5 — Tổng hợp và giá trị thực tế · *đánh giá ngày 09/10/2026*
+### Module 5 — Tổng hợp và giá trị thực tế · *đánh giá ngày 10/10/2026*
 
-**Mô hình CatBoost** (`module5/Module5_catboost.ipynb`)
+**Mô hình LightGBM** (`module5/Module5_lightgbm.ipynb`)
 
-- [x] ✅ Train, tối ưu 12 cấu hình (4 hàm mất mát × 3 bộ tham số, early stopping trên Validation), train lại, lưu mô hình + dự báo (`outputs/catboost/`)
+- [x] ✅ Train, tối ưu 12 cấu hình (4 hàm mất mát × 3 bộ tham số, early stopping trên Validation), train lại, lưu mô hình + dự báo (`outputs/lightgbm/`)
 - [x] ✅ Dùng chung bảng, đặc trưng, mốc chia, chỉ số với Random Forest (`chia_tap`, `danh_gia`, `bang_baseline`)
 - [x] ✅ Lỗi theo nhóm hàng/cửa hàng, đặc trưng quan trọng, biểu đồ thực tế vs dự báo
 - [x] ✅ Viết phần kết quả và thảo luận (mục 5 trong notebook)
-- [x] ✅ Đã nộp vào [báo cáo](bao_cao/BAO_CAO.md) (`bao_cao/du_lieu/catboost/`)
-- [ ] ⚠️ **Thắng MA7 về MAE/WAPE nhưng dự báo thiếu 42% tổng lượng** (loss MAE ≈ trung vị ≈ 0 với dữ liệu thưa) — cần nhóm chốt tiêu chí chọn mô hình có xét Bias, rồi chạy lại
+- [x] ✅ Đã nộp vào [báo cáo](bao_cao/BAO_CAO.md) (`bao_cao/du_lieu/lightgbm/`)
+- [ ] ⚠️ **Thắng MA7 về MAE/WAPE nhưng dự báo thiếu 37,3% tổng lượng** (loss L1 ưu tiên trung vị khi dữ liệu thưa) — cần nhóm chốt tiêu chí chọn mô hình có xét Bias, rồi chạy lại
 - [ ] ⚠️ Chạy lại sau khi chốt bộ lọc giao dịch
 
 **Phần việc còn lại của Module 5**
 
 - [x] ✅ Bản báo cáo tổng hợp tự động [bao_cao/BAO_CAO.md](bao_cao/BAO_CAO.md) (`module5/tao_bao_cao.py`): so sánh, chọn mô hình, Validation → Test, tổng lượng, nhóm hàng, khu vực, đặc trưng, R² âm, nhận xét từng module
-- [ ] ⚠️ Kết luận (mục 11 báo cáo) mới là bản tạm với RF + CatBoost — chọn mô hình tốt nhất khi có đủ Ridge, Poisson, XGBoost
+- [ ] ⚠️ Kết luận (mục 11 báo cáo) mới là bản tạm với RF + LightGBM — chọn mô hình tốt nhất khi có đủ Ridge, Poisson, XGBoost
 - [ ] ⬜ Business implications, limitations, recommendations
 - [ ] ⬜ VI. Conclusion
 
@@ -270,8 +271,8 @@ Giữ đúng tiêu đề `## 5. Kết quả và thảo luận` và nhãn `**Th�
 
 ### Module 4 — Đặc trưng và thiết kế thí nghiệm
 
-- [ ] ⚠️ **Validation 15–28/02 không đại diện cho Test** — rơi vào giai đoạn phục hồi sau Tết: Ridge, Poisson, CatBoost đều thắng MA7 trên Validation nhưng Ridge/Poisson thua trên Test. Cân nhắc backtest nhiều mốc hoặc dời Validation
-- [ ] ⚠️ `ngay_trong_thang` học hiệu ứng Tết tháng 1 (hệ số âm ở Ridge/Poisson, quan trọng 12,5% ở CatBoost) — cân nhắc bỏ hoặc thay bằng cờ giai đoạn Tết
+- [ ] ⚠️ **Validation 15–28/02 không đại diện cho Test** — rơi vào giai đoạn phục hồi sau Tết: LightGBM thắng MA7 trên Validation và Test, nhưng độ chính xác theo quy mô ô khác nhau; cân nhắc backtest nhiều mốc hoặc dời Validation
+- [ ] ⚠️ `ngay_trong_thang` có mức quan trọng 16,2% theo gain của LightGBM — kiểm tra hiệu ứng Tết và độ ổn định theo các mốc thời gian khác
 - [ ] ⬜ Chốt đặc trưng, leakage, Train–Validation–Test, quy trình tuning · XGBoost · phân tích lỗi
 
 ---
@@ -280,4 +281,4 @@ Giữ đúng tiêu đề `## 5. Kết quả và thảo luận` và nhãn `**Th�
 
 Toàn bộ kết quả, so sánh và kết luận nằm ở **[bao_cao/BAO_CAO.md](bao_cao/BAO_CAO.md)** — tự cập nhật khi mỗi module [nộp kết quả](#nộp-kết-quả-vào-báo-cáo); README không chép lại số để tránh lệch.
 
-Tình trạng 09/10/2026: đã nộp Random Forest và CatBoost (bảng mô hình chưa lọc); chờ Ridge, Poisson, XGBoost. Hai việc cần cả nhóm chốt trước khi kết luận — **bộ lọc giao dịch** và **tiêu chí chọn mô hình có xét Bias** — xem mục 9 và 11 của báo cáo.
+Tình trạng 10/10/2026: đã nộp Random Forest và LightGBM (bảng mô hình chưa lọc); chờ Ridge, Poisson, XGBoost. Hai việc cần cả nhóm chốt trước khi kết luận — **bộ lọc giao dịch** và **tiêu chí chọn mô hình có xét Bias** — xem mục 9 và 11 của báo cáo.

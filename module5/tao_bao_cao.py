@@ -26,7 +26,7 @@ BASE = ["Naive (lag 1)", "Seasonal Naive (lag 7)", "MA7"]
 COLS = ["MAE", "RMSE", "WAPE", "R2", "Bias"]
 NGUONG_BIAS = 0.10                                   # đề xuất: chỉ chọn mô hình lệch tổng lượng ≤ 10%
 # màu cố định theo mô hình (không đổi khi thêm/bớt mô hình); thực tế = mực đen, baseline = xám
-MAU = {"ridge": "#2a78d6", "poisson": "#eb6834", "rf": "#1baf7a", "xgb": "#eda100", "catboost": "#e87ba4"}
+MAU = {"ridge": "#2a78d6", "poisson": "#eb6834", "rf": "#1baf7a", "xgb": "#eda100", "lightgbm": "#e87ba4"}
 MUC, XAM, LUOI, NEN = "#0b0b0b", "#898781", "#e1e0d9", "#fcfcfb"
 NHOM_DT = {"Bán gần đây (lag, trung bình, độ lệch chuẩn)": ["lag_1", "lag_7", "lag_14", "tb_7", "tb_14", "std_7", "std_14"],
            "Lịch (thứ, cuối tuần, ngày trong tháng, Tết)": ["thu", "cuoi_tuan", "ngay_trong_thang", "ngay_toi_tet"],
@@ -102,7 +102,7 @@ def khoi_trang_thai(kq, loi):
     return (f"> **Cập nhật tự động {pd.Timestamp.now():%d/%m/%Y %H:%M}** · Test 01/03–31/03/2025: "
             f"{so(i['test_so_o'], 0)} ô, tổng thực tế {so(i['test_tong'], 0)} sản phẩm · bảng mô hình tổng "
             f"{so(i['bang_tong_so_luong'], 0)} sản phẩm — giữ: {giu}; bỏ: {bo}\n>\n"
-            f"> **Đã nộp {len(kq)}/{len(MO_HINH)}:** {tt}  \n> **Kiểm tra so sánh công bằng:** {cong_bang}")
+            f"> **Đã nộp {len(kq)}/{len(MO_HINH)}:** {tt}\n> **Kiểm tra so sánh công bằng:** {cong_bang}")
 
 
 def bang_chinh(kq):

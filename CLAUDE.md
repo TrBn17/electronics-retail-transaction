@@ -4,7 +4,7 @@ Project conventions for the retail demand forecasting assignment. See `README.md
 
 ## Project
 
-Five-person group project: forecast daily `so_luong` (units sold) for each **store × product group** pair of the Genbyte electronics retail chain, using Q1/2025 data (01/01–31/03/2025, 90 days). Each module owns part of the report (sections I–VI) and one model: Ridge (Module 1), Poisson (Module 2), Random Forest (Module 3), XGBoost (Module 4), CatBoost (Module 5). The end product is a **fair comparison** of 3 baselines and 5 models.
+Five-person group project: forecast daily `so_luong` (units sold) for each **store × product group** pair of the Genbyte electronics retail chain, using Q1/2025 data (01/01–31/03/2025, 90 days). Each module owns part of the report (sections I–VI) and one model: Ridge (Module 1), Poisson (Module 2), Random Forest (Module 3), XGBoost (Module 4), LightGBM (Module 5). The end product is a **fair comparison** of 3 baselines and 5 models.
 
 - The report, notebook markdown and code comments are written in **Vietnamese**.
 - Notebooks are usually run on **Google Colab**; code must work both locally and on Colab.
@@ -16,7 +16,7 @@ Five-person group project: forecast daily `so_luong` (units sold) for each **sto
   - evaluation: `chia_tap`, `danh_gia`, `bang_baseline`, `loi_theo_nhom`;
   - utilities: `tai_ve`, `nop_ket_qua` (submit a model's results to the report);
   - constants: `NHOM_HANG`, `KHU_VUC_KHAC`, `VUNG`, `TET`, `FEATS`, `KEY`, `VAL_START`, `TRAIN_END`, `TEST_START`, `SEED`, `MO_HINH` (model names/folders/prefixes), `BAO_CAO_DIR`.
-- `module3/Module3_1_tien_xu_ly.ipynb` builds the modelling table; `Module3_2_eda.ipynb`, `Module3_3_random_forest.ipynb` and `module5/Module5_catboost.ipynb` read it.
+- `module3/Module3_1_tien_xu_ly.ipynb` builds the modelling table; `Module3_2_eda.ipynb`, `Module3_3_random_forest.ipynb` and `module5/Module5_lightgbm.ipynb` read it.
 - Each module keeps its notebooks in its own folder `moduleN/` and imports the shared code:
   ```python
   import sys; sys.path.append("../module3")
@@ -42,7 +42,7 @@ Five-person group project: forecast daily `so_luong` (units sold) for each **sto
   - Tuning train 15/01–14/02 · Validation 15/02–28/02 · Test 01/03–31/03 (refit on 15/01–28/02 before scoring Test).
 - Hyperparameters are chosen by **MAE on Validation**.
 - Metrics: MAE, RMSE, WAPE, R² and Bias (total forecast / total actual − 1) on Test, always reported next to `bang_baseline(te)` (Naive lag 1, Seasonal Naive lag 7, MA7). Negative predictions are clipped to 0.
-- Model-specific handling of the same columns is fine (e.g. CatBoost treats the three `_code` columns as categorical); adding new information that other models do not get is not.
+- Model-specific handling of the same columns is fine (e.g. LightGBM treats the three `_code` columns as categorical); adding new information that other models do not get is not.
 - **No leakage:** features use past data only (shifted by at least 1 day); no tuning on Test; same-day `doanh_thu`, `so_dong` and `co_giao_dich` are never features.
 - Saved files and the results section follow the [Output contract](#output-contract-every-model) so Module 5 can merge them.
 - `random_state=42` everywhere.
@@ -51,7 +51,7 @@ Five-person group project: forecast daily `so_luong` (units sold) for each **sto
 
 ## Output contract (every model)
 
-Every model notebook produces the same files and the same results section, so the 5 models can be compared without per-model code. Reference implementations: `module3/Module3_3_random_forest.ipynb`, `module5/Module5_catboost.ipynb`. The README section **Chuẩn đầu ra mỗi mô hình** has the copyable template for section 5.
+Every model notebook produces the same files and the same results section, so the 5 models can be compared without per-model code. Reference implementations: `module3/Module3_3_random_forest.ipynb`, `module5/Module5_lightgbm.ipynb`. The README section **Chuẩn đầu ra mỗi mô hình** has the copyable template for section 5.
 
 | Module | Model | Notebook | Folder | Prefix `<p>` | Prediction column | Row name in `<p>_metrics.csv` |
 |---|---|---|---|---|---|---|
@@ -59,7 +59,7 @@ Every model notebook produces the same files and the same results section, so th
 | 2 | Poisson | `module2/Module2_poisson.ipynb` | `outputs/poisson/` | `poisson` | `du_bao_poisson` | `Poisson` |
 | 3 | Random Forest | `module3/Module3_3_random_forest.ipynb` | `outputs/rf/` | `rf` | `du_bao_rf` | `Random Forest` |
 | 4 | XGBoost | `module4/Module4_xgboost.ipynb` | `outputs/xgb/` | `xgb` | `du_bao_xgb` | `XGBoost` |
-| 5 | CatBoost | `module5/Module5_catboost.ipynb` | `outputs/catboost/` | `cb` | `du_bao_cb` | `CatBoost` |
+| 5 | LightGBM | `module5/Module5_lightgbm.ipynb` | `outputs/lightgbm/` | `lgbm` | `du_bao_lgbm` | `LightGBM` |
 
 This table is also `MO_HINH` in `module3_preprocess.py`; `nop_ket_qua` and the report read it, so change both together.
 
