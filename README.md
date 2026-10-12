@@ -233,7 +233,7 @@ Giữ đúng tiêu đề `## 5. Kết quả và thảo luận` và nhãn `**Th�
 **V. Results — theo nhóm hàng và cửa hàng**
 
 - [x] ✅ Lỗi Random Forest theo nhóm hàng và cửa hàng (`rf_error_by_category.csv`, `rf_error_by_store.csv`)
-- [ ] ⚠️ Tổng hợp các mô hình theo nhóm hàng/khu vực — tự động trong [báo cáo](bao_cao/BAO_CAO.md) mục 6–7, đang có RF + LightGBM; chờ 3 mô hình còn lại
+- [x] ✅ Tổng hợp các mô hình theo nhóm hàng/khu vực — tự động trong [báo cáo](bao_cao/BAO_CAO.md) mục 6–7, đủ 5 mô hình (12/10/2026)
 
 **Mô hình Random Forest**
 
@@ -259,21 +259,40 @@ Giữ đúng tiêu đề `## 5. Kết quả và thảo luận` và nhãn `**Th�
 **Phần việc còn lại của Module 5**
 
 - [x] ✅ Bản báo cáo tổng hợp tự động [bao_cao/BAO_CAO.md](bao_cao/BAO_CAO.md) (`module5/tao_bao_cao.py`): so sánh, chọn mô hình, Validation → Test, tổng lượng, nhóm hàng, khu vực, đặc trưng, R² âm, nhận xét từng module
-- [ ] ⚠️ Kết luận (mục 11 báo cáo) mới là bản tạm với RF + LightGBM — chọn mô hình tốt nhất khi có đủ Ridge, Poisson, XGBoost
+- [x] ✅ Kết luận (mục 11 báo cáo, 12/10/2026, đủ 5 mô hình, bảng chưa lọc): theo tiêu chí |Bias| ≤ 10% thì **MA7** (MAE 0,744); mô hình học máy gần nhất là Random Forest (MAE 0,757, Bias +0,8%). Nếu chỉ xét MAE thì LightGBM 0,678 nhưng Bias −37,3%
 - [ ] ⬜ Business implications, limitations, recommendations
 - [ ] ⬜ VI. Conclusion
 
 ### Module 1, 2
 
 - [x] ✅ Baseline Naive, Seasonal Naive, MA7 — có sẵn trong code chung (`bang_baseline`)
-- [ ] ⬜ Module 1 — I. Introduction · V. Kết quả baseline · Ridge Regression
-- [ ] ⬜ Module 2 — II. Literature Review · IV. Problem formulation, metrics · References · Poisson Regression
+- [ ] ⬜ Module 1 — I. Introduction · viết thành văn mục V (kết quả baseline)
+- [ ] ⬜ Module 2 — II. Literature Review · IV. Problem formulation, metrics · References
+
+**Mô hình Ridge** (`module1/Module1_ridge.ipynb`, chạy 12/10/2026)
+
+- [x] ✅ Train, tối ưu 12 cấu hình trên Validation (`alpha` × `log1p`/`goc`), train lại, lưu mô hình + dự báo (`outputs/ridge/`)
+- [x] ✅ Cùng bảng, đặc trưng, mốc chia, chỉ số với các mô hình khác; đã nộp `bao_cao/du_lieu/ridge/`
+- [x] ✅ Mục 5 trong notebook. Test: MAE 0,802 (MA7 0,744), Bias +10,7%. Thắng MA7 trên Validation (MAE 0,753 so với 0,847) rồi thua trên Test
+- [ ] ⚠️ Chạy lại sau khi chốt bộ lọc giao dịch
+
+**Mô hình Poisson** (`module2/Module2_poisson.ipynb`)
+
+- [x] ✅ Đã nộp `bao_cao/du_lieu/poisson/` — Test MAE 0,799, Bias +5,7% (thua MA7; |Bias| ≤ 10%)
+- [ ] ⬜ Viết literature review / problem formulation (phần chữ của Module 2)
 
 ### Module 4 — Đặc trưng và thiết kế thí nghiệm
 
 - [ ] ⚠️ **Validation 15–28/02 không đại diện cho Test** — rơi vào giai đoạn phục hồi sau Tết: LightGBM thắng MA7 trên Validation và Test, nhưng độ chính xác theo quy mô ô khác nhau; cân nhắc backtest nhiều mốc hoặc dời Validation
 - [ ] ⚠️ `ngay_trong_thang` có mức quan trọng 16,2% theo gain của LightGBM — kiểm tra hiệu ứng Tết và độ ổn định theo các mốc thời gian khác
-- [ ] ⬜ Chốt đặc trưng, leakage, Train–Validation–Test, quy trình tuning · XGBoost · phân tích lỗi
+- [ ] ⬜ Chốt đặc trưng, leakage, có nên dời Validation — chưa chốt (Ridge và Poisson thắng MA7 trên Validation rồi thua Test)
+
+**Mô hình XGBoost** (`module4/Module4_xgboost.ipynb`, chạy 12/10/2026)
+
+- [x] ✅ Train, tối ưu 12 cấu hình (4 hàm mất mát × 3 bộ tham số, early stopping), train lại, lưu mô hình + dự báo (`outputs/xgb/`)
+- [x] ✅ Cùng bảng, đặc trưng, mốc chia, chỉ số; lỗi theo nhóm hàng/cửa hàng; đã nộp `bao_cao/du_lieu/xgb/`
+- [x] ✅ Mục 5 trong notebook. Test: MAE 0,700 (thắng MA7 0,744), WAPE 0,634, Bias −30,5%. Thắng WAPE ở 22/23 nhóm hàng, 124/130 cửa hàng; Phụ kiện thua. `ngay_trong_thang` chỉ 5,2% gain (LightGBM 16,2%)
+- [ ] ⚠️ Loss trị tuyệt đối làm thiếu hàng — cần ràng buộc |Bias| khi chọn cấu hình; chạy lại sau khi chốt bộ lọc
 
 ---
 
@@ -281,4 +300,4 @@ Giữ đúng tiêu đề `## 5. Kết quả và thảo luận` và nhãn `**Th�
 
 Toàn bộ kết quả, so sánh và kết luận nằm ở **[bao_cao/BAO_CAO.md](bao_cao/BAO_CAO.md)** — tự cập nhật khi mỗi module [nộp kết quả](#nộp-kết-quả-vào-báo-cáo); README không chép lại số để tránh lệch.
 
-Tình trạng 10/10/2026: đã nộp Random Forest và LightGBM (bảng mô hình chưa lọc); chờ Ridge, Poisson, XGBoost. Hai việc cần cả nhóm chốt trước khi kết luận — **bộ lọc giao dịch** và **tiêu chí chọn mô hình có xét Bias** — xem mục 9 và 11 của báo cáo.
+Tình trạng 12/10/2026: đã nộp đủ 5 mô hình trên bảng chưa lọc. Theo tiêu chí đề xuất (|Bias| ≤ 10%), MA7 vẫn đứng đầu (MAE 0,744); Random Forest là mô hình học máy gần nhất (0,757, Bias +0,8%). LightGBM có MAE thấp nhất (0,678) nhưng Bias −37,3%. Hai việc cần cả nhóm chốt trước khi kết luận cuối — **bộ lọc giao dịch** và **tiêu chí chọn mô hình** — xem mục 9 và 11 của báo cáo.

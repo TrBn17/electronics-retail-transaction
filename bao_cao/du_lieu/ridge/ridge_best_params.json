@@ -1,0 +1,22 @@
+{
+  "alpha": 100.0,
+  "bien_doi": "goc",
+  "one_hot": [
+    "thu",
+    "Mã cửa hàng_code",
+    "Nhóm hàng_code",
+    "Vùng_code"
+  ],
+  "chuan_hoa": [
+    "lag_1",
+    "lag_7",
+    "lag_14",
+    "tb_7",
+    "tb_14",
+    "std_7",
+    "std_14",
+    "cuoi_tuan",
+    "ngay_trong_thang",
+    "ngay_toi_tet"
+  ]
+}

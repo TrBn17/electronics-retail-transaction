@@ -1,0 +1,13 @@
+{
+  "objective": "reg:absoluteerror",
+  "eval_metric": "mae",
+  "reg_lambda": 1.0,
+  "min_child_weight": 20,
+  "max_depth": 4,
+  "learning_rate": 0.03,
+  "subsample": 0.8,
+  "colsample_bytree": 0.8,
+  "tree_method": "hist",
+  "n_estimators": 179,
+  "early_stopping_rounds": 75
+}
