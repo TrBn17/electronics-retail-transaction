@@ -1,4 +1,4 @@
-"""Module 3 — tiền xử lý bảng kê bán hàng Genbyte, dùng chung cho cả 5 mô hình.
+"""Module 3 — tiền xử lý export ERP bảng kê bán hàng, dùng chung cho cả 5 mô hình.
 
     import sys; sys.path.append("../module3")       # notebook ở thư mục module khác (module1/, module4/…)
     from module3_preprocess import doc_va_lam_sach, tao_bang_ngay, doc_bang_ngay, tao_dac_trung
@@ -51,7 +51,7 @@ NHOM_HANG = {"DIENTHOAI": "Điện thoại", "LAPTOP": "Laptop", "MAYTINHBANG": 
              "CAMERA": "Camera/mạng", "DIENLANH": "Điện lạnh", "GIADUNG": "Gia dụng", "SIMTHE": "Sim thẻ",
              "KHUYENMAI": "Khuyến mãi", "LINHKIENMT": "Linh kiện máy tính", "MAYTINHPC": "Máy tính PC",
              "SCBH": "Sửa chữa BH", "PHANMEM001": "Phần mềm", "NMANG001": "Nhà mạng"}
-# Mã KVKD không phải vùng shop bán lẻ (đã đối chiếu danh mục khu vực Genbyte 06/10/2026)
+# Mã KVKD không phải vùng shop bán lẻ (đã đối chiếu danh mục khu vực trong ERP, 06/10/2026)
 KHU_VUC_KHAC = {"KVOL": "Khác - Online", "KVHN0": "Khác - Công ty (bán buôn)", "KVHCM0": "Khác - Chi nhánh HCM",
                 "KVKDSCDV": "Khác - Dịch vụ sửa chữa", "KVMTAY": "Khác - Kho Miền Tây"}
 VUNG = {"HCM": "Miền HCM", "HN": "Miền Hà Nội", "MB": "Miền Bắc", "MN": "Miền Nam", "MTR": "Miền Trung"}
@@ -81,7 +81,7 @@ def tai_du_lieu(file=DATA_FILE):
 
 
 def doc_va_lam_sach(file=DATA_FILE, khu_vuc=KHU_VUC):
-    """Đọc file export Genbyte → (giao dịch đã làm sạch + cờ, dict số liệu cho báo cáo chất lượng).
+    """Đọc file export ERP → (giao dịch đã làm sạch + cờ, dict số liệu cho báo cáo chất lượng).
 
     File export: 2 dòng tiêu đề trống, dòng 3 là tên cột, có dòng 'Tổng cộng' để đối chiếu.
     Giữ mọi giao dịch, chỉ gắn cờ: la_ban_buon, la_khu_vuc_khac, la_0_dong, la_tra_lai.

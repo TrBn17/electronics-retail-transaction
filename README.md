@@ -1,10 +1,10 @@
 # Dự báo lượng bán theo Cửa hàng × Nhóm hàng × Ngày
 
-Dự báo **số lượng bán mỗi ngày** cho từng cặp cửa hàng × nhóm hàng của chuỗi bán lẻ điện tử Genbyte, so sánh 3 baseline và 5 mô hình học máy.
+Dự báo **số lượng bán mỗi ngày** cho từng cặp cửa hàng × nhóm hàng của một doanh nghiệp bán lẻ điện tử (dữ liệu export từ ERP), so sánh 3 baseline và 5 mô hình học máy.
 
 | Dữ liệu | Giá trị |
 |---|---|
-| Nguồn | Bảng kê bán hàng Genbyte, toàn công ty |
+| Nguồn | Export ERP — bảng kê bán hàng, toàn doanh nghiệp |
 | Thời gian | 01/01/2025 → 31/03/2025 (90 ngày, có Tết Ất Tỵ 29/01) |
 | Quy mô | 216.995 dòng giao dịch · 130 cửa hàng · 15 khu vực · 23 nhóm hàng · 3.557 vật tư |
 | Bảng mô hình | 2.166 cặp cửa hàng × nhóm hàng × 90 ngày = **194.940 dòng** |

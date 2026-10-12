@@ -4,7 +4,7 @@ Project conventions for the retail demand forecasting assignment. See `README.md
 
 ## Project
 
-Five-person group project: forecast daily `so_luong` (units sold) for each **store × product group** pair of the Genbyte electronics retail chain, using Q1/2025 data (01/01–31/03/2025, 90 days). Each module owns part of the report (sections I–VI) and one model: Ridge (Module 1), Poisson (Module 2), Random Forest (Module 3), XGBoost (Module 4), LightGBM (Module 5). The end product is a **fair comparison** of 3 baselines and 5 models.
+Five-person group project: forecast daily `so_luong` (units sold) for each **store × product group** pair of a retail electronics business (ERP export), using Q1/2025 data (01/01–31/03/2025, 90 days). Each module owns part of the report (sections I–VI) and one model: Ridge (Module 1), Poisson (Module 2), Random Forest (Module 3), XGBoost (Module 4), LightGBM (Module 5). The end product is a **fair comparison** of 3 baselines and 5 models.
 
 - The report, notebook markdown and code comments are written in **Vietnamese**.
 - Notebooks are usually run on **Google Colab**; code must work both locally and on Colab.
